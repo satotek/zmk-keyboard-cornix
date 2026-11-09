@@ -12,6 +12,7 @@
 
 #define HM_PRIOR_IDLE 125
 #define LT_PRIOR_IDLE 150
+#define TD_TAPPING_TERM 250
 
 // A higher index wins. WIN only swaps the IME thumbs on Base, so it sits
 // right above Base; any higher and its &lt bindings cover the NumPad thumbs.
@@ -109,6 +110,50 @@
             quick-tap-ms = <200>;
             require-prior-idle-ms = <LT_PRIOR_IDLE>;
         };
+
+        // Destructive Adjust keys fire only on a double tap, so brushing them
+        // while holding Lower + Raise does nothing.
+        td_bt_clr: tap_dance_bt_clear {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            display-name = "BT Clear (x2)";
+            tapping-term-ms = <TD_TAPPING_TERM>;
+            bindings = <&none>, <&bt BT_CLR>;
+        };
+
+        td_bt_clr_all: tap_dance_bt_clear_all {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            display-name = "BT Clear All (x2)";
+            tapping-term-ms = <TD_TAPPING_TERM>;
+            bindings = <&none>, <&bt BT_CLR_ALL>;
+        };
+
+        td_reset: tap_dance_sys_reset {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            display-name = "Reset (x2)";
+            tapping-term-ms = <TD_TAPPING_TERM>;
+            bindings = <&none>, <&sys_reset>;
+        };
+
+        td_soft_off: tap_dance_soft_off {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            display-name = "Soft Off (x2)";
+            tapping-term-ms = <TD_TAPPING_TERM>;
+            bindings = <&none>, <&soft_off>;
+        };
+
+        // Tap dance keeps the event source, so the right half's copy still
+        // reboots the right half into its bootloader.
+        td_boot: tap_dance_bootloader {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            display-name = "Bootloader (x2)";
+            tapping-term-ms = <TD_TAPPING_TERM>;
+            bindings = <&none>, <&bootloader>;
+        };
     };
 
     conditional_layers {
@@ -196,15 +241,15 @@
             display-name = "Adjust";
 
             // ----------------------------------------------------------------------------------------------------------------------------
-            // | BT CLR |  BT 0   |  BT 1   |  BT 2   |  BT 3   |  BT 4   |                  | OUT TOG | USB | BLE | STUDIO | BAT | CON |
-            // | CLR ALL| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   | WIN | CAPS| POWER  | NUM |     |
-            // | PAUSE  | SCROLL  | MENU    | SYS RST | SOFT OFF| BOOT L  |        |  |      | BOOT R  |     |     |        |     |     |
+            // | BT CLR²|  BT 0   |  BT 1   |  BT 2   |  BT 3   |  BT 4   |                  | OUT TOG | USB | BLE | STUDIO | BAT | CON |
+            // | CLR AL²| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   | WIN | CAPS| POWER  | NUM |     |
+            // | PAUSE  | SCROLL  | MENU    | RESET²  | OFF²    | BOOT L² |        |  |      | BOOT R² |     |     |        |     |     |
             //                    |         |         |         |         |        |  |      |         |     |     |        |
 
             bindings = <
-&bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4                   &out OUT_TOG  &out OUT_USB  &out OUT_BLE  &studio_unlock     &ind_bat  &ind_con
-&bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &tog WIN      &kp CAPSLOCK  &ext_power EP_TOG  &kp KP_NUMLOCK  &none
-&kp PAUSE_BREAK &kp SCROLLLOCK &kp K_APP       &sys_reset      &soft_off       &bootloader     &trans  &trans  &bootloader  &none          &none         &none              &none  &none
+&td_bt_clr      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4                   &out OUT_TOG  &out OUT_USB  &out OUT_BLE  &studio_unlock     &ind_bat  &ind_con
+&td_bt_clr_all  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &tog WIN      &kp CAPSLOCK  &ext_power EP_TOG  &kp KP_NUMLOCK  &none
+&kp PAUSE_BREAK &kp SCROLLLOCK &kp K_APP       &td_reset       &td_soft_off    &td_boot        &trans  &trans  &td_boot  &none          &none         &none              &none  &none
 &none           &none          &none          &trans         &trans         &trans                         &trans        &trans         &trans        &none              &none  &none
             >;
         };
