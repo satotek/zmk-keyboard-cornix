@@ -18,6 +18,7 @@
       --adjust: #a13d46;
       --navi: #376a46;
       --num: #2f5f9b;
+      --win: #3f6f8f;
     }
 
     * { box-sizing: border-box; }
@@ -81,6 +82,7 @@
     section[data-layer="Adjust"] { --accent: var(--adjust); }
     section[data-layer="Navi"] { --accent: var(--navi); }
     section[data-layer="NumPad"] { --accent: var(--num); }
+    section[data-layer="Windows"] { --accent: var(--win); }
 
     .section-head {
       display: flex;
@@ -183,8 +185,8 @@
     </header>
     <div id="layers" class="layers"></div>
     <footer>
-      <span>Home row mods: A/Ctrl S/Alt D/GUI F/Shift - J/Shift K/GUI L/Alt ;/Ctrl</span>
-      <span>Adjust: hold EN/Symbol + KANA/Function</span>
+      <span>Home row mods: A/Ctrl S/Alt D/GUI - K/GUI L/Alt ;/Ctrl. Left Shift is one-shot</span>
+      <span>Adjust: hold EN/Symbol + KANA/Function. Win toggles Muhenkan/Henkan</span>
     </footer>
   </main>
 
@@ -196,8 +198,8 @@
         name: "Base", activation: "Default",
         rows: [
           ["Tab","Q","W","E","R","T", "Y","U","I","O","P","-"],
-          ["Esc|Ctrl","A|Ctrl","S|Alt","D|GUI","F|Shift","G", "H","J|Shift","K|GUI","L|Alt",";|Ctrl","'"],
-          ["Shift","Z","X","C","V","B","Caps Word", "Repeat","N","M",",",".","/","\\|RShift"],
+          ["Esc|Ctrl","A|Ctrl","S|Alt","D|GUI","F","G", "H","J","K|GUI","L|Alt",";|Ctrl","'"],
+          ["1-shot|Shift","Z","X","C","V","B","Caps Word", "Repeat","N","M",",",".","/","\\|RShift"],
           ["GUI","Alt","Ctrl","Tab|Num","EN|Symbols","Space|Navi", "Enter","KANA|Function","Bspc|Delete","Ctrl","Alt","GUI"]
         ]
       },
@@ -222,9 +224,9 @@
       {
         name: "Adjust", activation: "Hold EN + KANA",
         rows: [
-          ["BT Clear","BT 0","BT 1","BT 2","BT 3","BT 4", "Out Toggle","USB","BLE","Studio",D,D],
-          ["Clear All","Disc 0","Disc 1","Disc 2","Disc 3","Disc 4", "Base",D,"Caps","Power",D,D],
-          [D,D,D,D,D,"Boot L",T, T,"Boot R",D,D,D,D,D],
+          ["BT Clear","BT 0","BT 1","BT 2","BT 3","BT 4", "Out Toggle","USB","BLE","Studio","BAT","CON"],
+          ["Clear All","Disc 0","Disc 1","Disc 2","Disc 3","Disc 4", "Base","Win IME","Caps","Power","NumLk",D],
+          ["Pause","Scroll","Menu","Reset","Soft Off","Boot L",T, T,"Boot R",D,D,D,D,D],
           [D,D,D,T,T,T, T,T,T,D,D,D]
         ]
       },
@@ -244,6 +246,15 @@
           [D,D,D,D,D,D, "4","5","6","+","/",D],
           [T,D,D,D,D,D,T, T,"1","2","3",D,D,T],
           [T,T,T,D,D,T, "0",".","Enter",T,T,T]
+        ]
+      },
+      {
+        name: "Windows", activation: "Toggle Win IME on Adjust",
+        rows: [
+          [T,T,T,T,T,T, T,T,T,T,T,T],
+          [T,T,T,T,T,T, T,T,T,T,T,T],
+          [T,T,T,T,T,T,T, T,T,T,T,T,T,T],
+          [T,T,T,T,"Muhen|Symbols",T, T,"Henkan|Function",T,T,T,T]
         ]
       }
     ];

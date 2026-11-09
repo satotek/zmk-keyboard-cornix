@@ -8,8 +8,12 @@
 変更ファイル: `config/cornix.keymap`
 
 - レイヤ名を用途が分かる名前に整理
-  - `Base` / `Symbols` / `Function` / `Adjust` / `Navi` / `NumPad`
+  - `Base` / `Symbols` / `Function` / `Adjust` / `Navi` / `NumPad` / `Windows`
   - `Adjust` は `Raise` と `Lower` を同時押しで有効になる conditional layer
+  - `Windows` は Adjust の右人差し指（J の位置）でトグルする。入っている間だけ英数/かなのタップが無変換/変換になる。もう一度押すと戻る。Adjust の `Base` と再起動でも解除される
+- `&lt` は `tap-preferred`。スペース、Tab、英数、かなは、次のキーと重なる短押しでも文字のまま
+- ホームロウモッドの hold-trigger に Tab 親指と Backspace を含める。Shift や Cmd と組み合わせられる
+- F と J は文字のみ。左端の Shift は `&sk LSHIFT`（タップで次の1文字、押し続けで通常の Shift）
 - ホームロウモッド（`hm_l` / `hm_r`）は維持
 - 使っていなかった汎用 hold-tap（`hm`, `hm_shift_l`, `hm_shift_r`）を削除し、該当箇所は ZMK 標準の `&mt` / `&lt` に置換
 - Shift 併用で Backspace が Delete になる `bspc_del`（mod-morph）を追加

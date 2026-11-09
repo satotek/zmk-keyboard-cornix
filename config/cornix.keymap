@@ -17,12 +17,15 @@
 #define ADJUST 3
 #define NAVI   4
 #define NUM    5
+#define WIN    6
 
 // https://github.com/urob/zmk-config/tree/main#timeless-homerow-mods
 
 #define KEYS_L LT0 LT1 LT2 LT3 LT4 LT5 LM0 LM1 LM2 LM3 LM4 LM5 LB0 LB1 LB2 LB3 LB4 LB5  // left hand
 #define KEYS_R RT0 RT1 RT2 RT3 RT4 RT5 RM0 RM1 RM2 RM3 RM4 RM5 RB0 RB1 RB2 RB3 RB4 RB5  // right hand
-#define KEYS_T LH1 LH0 RH0 RH1
+// LH2 is the Tab thumb, RH2 is Backspace. HRM has to include them or
+// Shift/Ctrl/Cmd never apply to those keys.
+#define KEYS_T LH2 LH1 LH0 RH0 RH1 RH2
 #define ZMK_POINTING_DEFAULT_MOVE_VAL 800
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 15
 
@@ -79,7 +82,8 @@
             #binding-cells = <2>;
             bindings = <&mo>, <&kp>;
 
-            flavor = "hold-preferred";
+            // A rolled thumb key should stay a tap. hold-preferred turns that roll into the layer.
+            flavor = "tap-preferred";
             tapping-term-ms = <LT_TAPPING_TERM>;
             quick-tap-ms = <200>;
         };
@@ -102,14 +106,14 @@
 
             // ------------------------------------------------------------------------------------------------------------
             // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U   |  I   |  O   |  P   |  -  |
-            // | ESC/C | A/C | S/A | D/G  | F/S  |  G   |                   |  H   | J/S  | K/G  | L/A  | ;/C  |  '  |
-            // | SHIFT |  Z  |  X  |  C   |  V   |  B   | CAPS WORD | | REPEAT |  N   |  M   |  ,   |  .   |  /   | \/SHIFT |
+            // | ESC/C | A/C | S/A | D/G  |  F   |  G   |                   |  H   |  J   | K/G  | L/A  | ;/C  |  '  |
+            // | SK SFT|  Z  |  X  |  C   |  V   |  B   | CAPS WORD | | REPEAT |  N   |  M   |  ,   |  .   |  /   | \/SHIFT |
             //             | GUI | ALT | CTRL | TAB/NUM | EN/SYM | SPACE/NAV | | ENTER | KANA/FN | BSPC/DEL | CTRL | ALT | GUI |
 
             bindings = <
 &kp TAB  &kp Q          &kp W         &kp E         &kp R                &kp T                      &kp Y      &kp U                &kp I            &kp O         &kp P             &kp MINUS
-&mt LCTRL ESC  &hm_l LCTRL A  &hm_l LALT S  &hm_l LGUI D  &hm_l LSHFT F        &kp G                      &kp H      &hm_r RSHFT J        &hm_r RGUI K     &hm_r RALT L  &hm_r RCTRL SEMI  &kp SQT
-&kp LSHIFT  &kp Z       &kp X         &kp C         &kp V                &kp B        &caps_word  &key_repeat  &kp N      &kp M                &kp COMMA        &kp DOT       &kp FSLH          &hm_r RSHFT BSLH
+&mt LCTRL ESC  &hm_l LCTRL A  &hm_l LALT S  &hm_l LGUI D  &kp F                &kp G                      &kp H      &kp J                &hm_r RGUI K     &hm_r RALT L  &hm_r RCTRL SEMI  &kp SQT
+&sk LSHIFT  &kp Z       &kp X         &kp C         &kp V                &kp B        &caps_word  &key_repeat  &kp N      &kp M                &kp COMMA        &kp DOT       &kp FSLH          &hm_r RSHFT BSLH
 &kp LCTRL &kp LGUI      &kp LALT      &lt NUM TAB   &lt LOWER LANG2      &lt NAVI SPACE              &kp ENTER  &lt RAISE LANG1      &bspc_del         &kp RCTRL     &kp RALT          &kp RGUI
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
@@ -156,13 +160,13 @@
 
             // ----------------------------------------------------------------------------------------------------------------------------
             // | BT CLR |  BT 0   |  BT 1   |  BT 2   |  BT 3   |  BT 4   |                  | OUT TOG | USB | BLE | STUDIO | BAT | CON |
-            // | CLR ALL| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   |     | CAPS| POWER  | NUM |     |
+            // | CLR ALL| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   | WIN | CAPS| POWER  | NUM |     |
             // | PAUSE  | SCROLL  | MENU    | SYS RST | SOFT OFF| BOOT L  |        |  |      | BOOT R  |     |     |        |     |     |
             //                    |         |         |         |         |        |  |      |         |     |     |        |
 
             bindings = <
 &bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4                   &out OUT_TOG  &out OUT_USB  &out OUT_BLE  &studio_unlock     &ind_bat  &ind_con
-&bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &none         &kp CAPSLOCK  &ext_power EP_TOG  &kp KP_NUMLOCK  &none
+&bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &tog WIN      &kp CAPSLOCK  &ext_power EP_TOG  &kp KP_NUMLOCK  &none
 &kp PAUSE_BREAK &kp SCROLLLOCK &kp K_APP       &sys_reset      &soft_off       &bootloader     &trans  &trans  &bootloader  &none          &none         &none              &none  &none
 &none           &none          &none          &trans         &trans         &trans                         &trans        &trans         &trans        &none              &none  &none
             >;
@@ -193,6 +197,21 @@
 &trans &none  &none  &none  &none  &none  &trans  &trans  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_N3        &none         &none            &trans
 &trans &trans &trans &none  &none  &trans                 &kp KP_N0        &kp KP_DOT       &kp KP_ENTER     &trans        &trans           &trans
             >;
+        };
+
+        Windows_layer {
+            display-name = "Windows";
+
+            // Toggled from Adjust. 英数 / かな taps become 無変換 / 変換.
+            // Holds still open Symbols / Function. Other keys fall through.
+
+            bindings = <
+&trans &trans &trans &trans &trans &trans                    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans                    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans      &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &lt LOWER INT_MUHENKAN &trans    &trans &lt RAISE INT_HENKAN &trans &trans &trans &trans
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
     };
 };
