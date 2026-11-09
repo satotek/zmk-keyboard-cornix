@@ -13,6 +13,7 @@
 - ホームロウモッド（`hm_l` / `hm_r`）は維持
 - 使っていなかった汎用 hold-tap（`hm`, `hm_shift_l`, `hm_shift_r`）を削除し、該当箇所は ZMK 標準の `&mt` / `&lt` に置換
 - Shift 併用で Backspace が Delete になる `bspc_del`（mod-morph）を追加
+- Adjust レイヤーに NumLock / Pause / Scroll Lock / Menu / `&sys_reset` / `&soft_off` を追加
 - キー配置とレイヤ構成の早見表を `docs/keymap-cheatsheet.html` に追加（単体でブラウザで開ける）
 
 ## ZMK Studio 対応
