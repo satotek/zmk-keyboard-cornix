@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cornix Keymap Cheat Sheet</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212b;
+      --muted: #607080;
+      --line: #c9d2d9;
+      --paper: #f4f6f7;
+      --key: #ffffff;
+      --base: #246b78;
+      --symbol: #8b5a24;
+      --function: #71569b;
+      --adjust: #a13d46;
+      --navi: #376a46;
+      --num: #2f5f9b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    main {
+      width: min(1580px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 30px 0 38px;
+    }
+
+    header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 760;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .layers {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    section {
+      --accent: var(--base);
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--accent);
+      border-radius: 6px;
+      background: #fff;
+      padding: 13px;
+      break-inside: avoid;
+    }
+
+    section[data-layer="Symbols"] { --accent: var(--symbol); }
+    section[data-layer="Function"] { --accent: var(--function); }
+    section[data-layer="Adjust"] { --accent: var(--adjust); }
+    section[data-layer="Navi"] { --accent: var(--navi); }
+    section[data-layer="NumPad"] { --accent: var(--num); }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 760;
+      color: var(--accent);
+    }
+
+    .activation {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .board { display: grid; gap: 5px; }
+    .row { display: grid; gap: 5px; }
+    .row.twelve { grid-template-columns: repeat(6, 1fr) 22px repeat(6, 1fr); }
+    .row.fourteen { grid-template-columns: repeat(7, 1fr) 10px repeat(7, 1fr); }
+    .row.thumb { grid-template-columns: repeat(6, 1fr) 10px repeat(6, 1fr); margin-top: 3px; }
+    .gap { min-width: 0; }
+
+    .key {
+      min-width: 0;
+      height: 45px;
+      border: 1px solid #aebac3;
+      border-bottom-width: 3px;
+      border-radius: 5px;
+      background: var(--key);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 2px;
+      overflow: hidden;
+      text-align: center;
+      font-size: 9px;
+      line-height: 1.05;
+      font-weight: 720;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .key.dual {
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 7%, white);
+    }
+
+    .key.mod { background: #eef2f4; }
+    .key.none { color: #a8b1b8; background: #f4f5f6; border-style: dashed; }
+    .key.trans { color: #778691; background: #f8fafb; }
+
+    .tap { font-size: 10px; }
+    .hold {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 650;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 980px) {
+      main { width: min(780px, calc(100% - 20px)); padding-top: 18px; }
+      header { align-items: start; flex-direction: column; }
+      .meta { text-align: left; }
+      .layers { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      @page { size: A3 landscape; margin: 10mm; }
+      body { background: #fff; }
+      main { width: 100%; padding: 0; }
+      section { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Cornix Keymap</h1>
+      <div class="meta">
+        Tap / hold labels show dual-role keys<br>
+        Dot = disabled, triangle = transparent to lower layer
+      </div>
+    </header>
+    <div id="layers" class="layers"></div>
+    <footer>
+      <span>Home row mods: A/Ctrl S/Alt D/GUI F/Shift - J/Shift K/GUI L/Alt ;/Ctrl</span>
+      <span>Adjust: hold EN/Symbol + KANA/Function</span>
+    </footer>
+  </main>
+
+  <script>
+    const D = "·";
+    const T = "▽";
+    const layers = [
+      {
+        name: "Base", activation: "Default",
+        rows: [
+          ["Tab","Q","W","E","R","T", "Y","U","I","O","P","-"],
+          ["Esc|Ctrl","A|Ctrl","S|Alt","D|GUI","F|Shift","G", "H","J|Shift","K|GUI","L|Alt",";|Ctrl","'"],
+          ["Shift","Z","X","C","V","B","Caps Word", "Repeat","N","M",",",".","/","\\|RShift"],
+          ["GUI","Alt","Ctrl","Tab|Num","EN|Symbols","Space|Navi", "Enter","KANA|Function","Bspc|Delete","Ctrl","Alt","GUI"]
+        ]
+      },
+      {
+        name: "Symbols", activation: "Hold EN",
+        rows: [
+          ["`","~","!","@","#","$", "[","]","{","}","(",")"],
+          ["%","^","&",";","'","\"", "=","-","+","*","/","\\"],
+          [D,D,D,D,D,D,T, T,"<",">","_","Pipe","?",":"],
+          [T,T,T,T,T,T, T,T,T,T,T,T]
+        ]
+      },
+      {
+        name: "Function", activation: "Hold KANA",
+        rows: [
+          ["F1","F2","F3","F4","F5","F6", D,D,D,D,D,D],
+          ["F7","F8","F9","F10","F11","F12", "Home","End","PgUp","PgDn","Insert","PrtSc"],
+          [T,D,D,D,D,D,T, T,D,D,D,D,D,T],
+          [T,T,T,T,T,T, T,T,T,T,T,T]
+        ]
+      },
+      {
+        name: "Adjust", activation: "Hold EN + KANA",
+        rows: [
+          ["BT Clear","BT 0","BT 1","BT 2","BT 3","BT 4", "Out Toggle","USB","BLE","Studio",D,D],
+          ["Clear All","Disc 0","Disc 1","Disc 2","Disc 3","Disc 4", "Base",D,"Caps","Power",D,D],
+          [D,D,D,D,D,"Boot L",T, T,"Boot R",D,D,D,D,D],
+          [D,D,D,T,T,T, T,T,T,D,D,D]
+        ]
+      },
+      {
+        name: "Navi", activation: "Hold Space",
+        rows: [
+          [D,"Left Click","Middle","Right Click","Scroll Up","Scroll Down", "Insert","Home","PgDn","PgUp","End","Delete"],
+          [D,"Mouse Left","Mouse Down","Mouse Up","Mouse Right",D, "Left","Down","Up","Right","Caps","Bspc"],
+          [T,D,"Scroll Left","Scroll Right",D,D,T, T,D,D,D,D,D,T],
+          [T,T,T,T,T,T, T,T,T,T,T,T]
+        ]
+      },
+      {
+        name: "NumPad", activation: "Hold Tab",
+        rows: [
+          [D,D,D,D,D,D, "7","8","9","-","*",D],
+          [D,D,D,D,D,D, "4","5","6","+","/",D],
+          [T,D,D,D,D,D,T, T,"1","2","3",D,D,T],
+          [T,T,T,D,D,T, "0",".","Enter",T,T,T]
+        ]
+      }
+    ];
+
+    function keyClass(label) {
+      if (label === D) return "key none";
+      if (label === T) return "key trans";
+      if (label.includes("|")) return "key dual";
+      if (["Ctrl","Alt","GUI","Shift"].includes(label)) return "key mod";
+      return "key";
+    }
+
+    function renderKey(label) {
+      const el = document.createElement("div");
+      el.className = keyClass(label);
+      if (label.includes("|")) {
+        const [tap, hold] = label.split("|");
+        el.innerHTML = `<span class="tap">${tap}</span><span class="hold">hold ${hold}</span>`;
+      } else {
+        el.textContent = label;
+      }
+      return el;
+    }
+
+    function renderRow(values, index) {
+      const row = document.createElement("div");
+      row.className = `row ${index < 2 ? "twelve" : index === 2 ? "fourteen" : "thumb"}`;
+      const split = index < 2 ? 6 : index === 2 ? 7 : 6;
+      values.forEach((value, i) => {
+        if (i === split) {
+          const gap = document.createElement("div");
+          gap.className = "gap";
+          row.appendChild(gap);
+        }
+        row.appendChild(renderKey(value));
+      });
+      return row;
+    }
+
+    const root = document.querySelector("#layers");
+    layers.forEach(layer => {
+      const section = document.createElement("section");
+      section.dataset.layer = layer.name;
+      section.innerHTML = `<div class="section-head"><h2>${layer.name}</h2><span class="activation">${layer.activation}</span></div>`;
+      const board = document.createElement("div");
+      board.className = "board";
+      layer.rows.forEach((row, index) => board.appendChild(renderRow(row, index)));
+      section.appendChild(board);
+      root.appendChild(section);
+    });
+  </script>
+</body>
+</html>
