@@ -155,13 +155,13 @@
 
             // ----------------------------------------------------------------------------------------------------------------------------
             // | BT CLR |  BT 0   |  BT 1   |  BT 2   |  BT 3   |  BT 4   |                  | OUT TOG | USB | BLE | STUDIO |     |     |
-            // | CLR ALL| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   |     | CAPS| POWER  |     |     |
+            // | CLR ALL| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   |     | CAPS| POWER  | NUM |     |
             // |        |         |         |         |         | BOOT L  |        |  |      | BOOT R  |     |     |        |     |     |
             //                    |         |         |         |         |        |  |      |         |     |     |        |
 
             bindings = <
 &bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4                   &out OUT_TOG  &out OUT_USB  &out OUT_BLE  &studio_unlock     &none  &none
-&bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &none         &kp CAPSLOCK  &ext_power EP_TOG  &none  &none
+&bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &none         &kp CAPSLOCK  &ext_power EP_TOG  &kp KP_NUMLOCK  &none
 &none           &none          &none          &none          &none          &bootloader     &trans  &trans  &bootloader  &none          &none         &none              &none  &none
 &none           &none          &none          &trans         &trans         &trans                         &trans        &trans         &trans        &none              &none  &none
             >;
