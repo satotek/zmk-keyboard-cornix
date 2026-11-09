@@ -16,3 +16,7 @@ compile_commands.json
 /zmk/
 /zmk-dongle-display/
 /zmk-helpers/
+/zmk-module-battery-history/
+/zmk-module-ble-management/
+/zmk-module-runtime-input-processor/
+/zmk-module-settings-rpc/
