@@ -2,8 +2,17 @@
 .env
 .direnv
 result
-.envrc
 .build
 target
 
 firmware
+compile_commands.json
+
+# Local west workspace and fetched modules
+/.west/
+/modules/
+/optional/
+/zephyr/
+/zmk/
+/zmk-dongle-display/
+/zmk-helpers/

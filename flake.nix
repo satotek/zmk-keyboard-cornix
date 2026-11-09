@@ -55,18 +55,13 @@
 
             #never export ZEPHYR_BASE, it is set by west
             shellHook = ''
-
-
-ZMK_LIB_PREFIX=${"$"}{ZMK_LIB_PREFIX:=zmk_exts}
-
-ZEPHYR_BASE=$(west config 'zephyr.base')
-LIB_BASE_DIR="$(dirname "$ZEPHYR_BASE")"
-
-Zephyr_DIR=$ZEPHYR_BASE/share/zephyr-package/cmake/
-
-export ZMK_LIB_PREFIX
-export Zephyr_DIR
-echo "use lib prefix $ZMK_LIB_PREFIX"
+if west topdir >/dev/null 2>&1; then
+  ZEPHYR_BASE=$(west config zephyr.base)
+  Zephyr_DIR=$ZEPHYR_BASE/share/zephyr-package/cmake/
+  export Zephyr_DIR
+else
+  echo "West workspace is not initialized. Run: just init"
+fi
             '';
           };
         });

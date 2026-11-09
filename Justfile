@@ -1,15 +1,14 @@
 default:
     @just --list --unsorted
 
-config := absolute_path('config2')
+config := absolute_path('config')
 build := absolute_path('.build')
 out := absolute_path('firmware')
 draw := absolute_path('draw')
 kb := absolute_path('kb')
 
-## you should set ZMK_LIB_PREFIX to your zmk lib path's parent directory
-module_base := "${ZMK_LIB_PREFIX:=zmk_exts}"
-zmk_base := "${ZMK_LIB_PREFIX}/zmk/app"
+module_base := absolute_path('.')
+zmk_base := absolute_path('zmk/app')
 
 # parse combos.dtsi and adjust settings to not run out of slots
 _parse_combos:
@@ -62,19 +61,12 @@ _build_single $board $shield $snippet $artifact *west_args:
 
     build_dir="{{ build / '$artifact' }}"
 
-    CMAKE_ARGS=""
-
-    if [[ -f zephyr/module.yml ]] ; then
-        module_path_ext="$(pwd)/"
-        echo "Found local module $module_path_ext, append to west build command"
-        export ZMK_EXTRA_MODULES=$(pwd)
-        CMAKE_ARGS="${CMAKE_ARGS} -DZMK_EXTRA_MODULES=$(pwd)"
-    fi
+    module_path="$(pwd)"
     echo "Building firmware for $artifact..."
     echo "Running" west build -s {{zmk_base}} -d "$build_dir" -b $board {{ west_args }} ${snippet:+-S "$snippet"} -- \
-        -DZMK_CONFIG="{{ config }}" $CMAKE_ARGS ${shield:+-DSHIELD="$shield"}
+        -DZMK_CONFIG="{{ config }}" -DZMK_EXTRA_MODULES="$module_path" ${shield:+-DSHIELD="$shield"}
     west build -s {{zmk_base}} -d "$build_dir" -b $board {{ west_args }} ${snippet:+-S "$snippet"} -- \
-        -DZMK_CONFIG="{{ config }}" ${CMAKE_ARGS} ${shield:+-DSHIELD="$shield"}
+        -DZMK_CONFIG="{{ config }}" -DZMK_EXTRA_MODULES="$module_path" ${shield:+-DSHIELD="$shield"}
 
     if [[ -f "$build_dir/zephyr/zmk.uf2" ]]; then
         build_output="$build_dir/zephyr/zmk.uf2"
@@ -128,7 +120,11 @@ draw keyboard:
 
 # initialize west
 init:
-    west init -l config
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! west topdir >/dev/null 2>&1; then
+        west init -l config
+    fi
     west update --fetch-opt=--filter=blob:none
     west zephyr-export
 
