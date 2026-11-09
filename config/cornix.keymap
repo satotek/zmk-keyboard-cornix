@@ -11,6 +11,7 @@
 #define LT_TAPPING_TERM 250
 
 #define HM_PRIOR_IDLE 125
+#define LT_PRIOR_IDLE 150
 
 // A higher index wins. WIN only swaps the IME thumbs on Base, so it sits
 // right above Base; any higher and its &lt bindings cover the NumPad thumbs.
@@ -99,10 +100,14 @@
             #binding-cells = <2>;
             bindings = <&mo>, <&kp>;
 
-            // A rolled thumb key should stay a tap. hold-preferred turns that roll into the layer.
-            flavor = "tap-preferred";
+            // balanced keeps a roll (thumb released before the next key) a tap,
+            // yet a held thumb + quick key gets the layer without waiting out
+            // the tapping term as tap-preferred did. Prior idle keeps Space
+            // typed mid-word a tap.
+            flavor = "balanced";
             tapping-term-ms = <LT_TAPPING_TERM>;
             quick-tap-ms = <200>;
+            require-prior-idle-ms = <LT_PRIOR_IDLE>;
         };
     };
 
