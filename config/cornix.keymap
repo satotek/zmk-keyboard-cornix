@@ -27,6 +27,7 @@
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 15
 
 #include <behaviors.dtsi>
+#include <behaviors/rgbled_widget.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/keys.h>
@@ -154,13 +155,13 @@
             display-name = "Adjust";
 
             // ----------------------------------------------------------------------------------------------------------------------------
-            // | BT CLR |  BT 0   |  BT 1   |  BT 2   |  BT 3   |  BT 4   |                  | OUT TOG | USB | BLE | STUDIO |     |     |
+            // | BT CLR |  BT 0   |  BT 1   |  BT 2   |  BT 3   |  BT 4   |                  | OUT TOG | USB | BLE | STUDIO | BAT | CON |
             // | CLR ALL| DISC 0  | DISC 1  | DISC 2  | DISC 3  | DISC 4  |                  |  BASE   |     | CAPS| POWER  | NUM |     |
             // | PAUSE  | SCROLL  | MENU    | SYS RST | SOFT OFF| BOOT L  |        |  |      | BOOT R  |     |     |        |     |     |
             //                    |         |         |         |         |        |  |      |         |     |     |        |
 
             bindings = <
-&bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4                   &out OUT_TOG  &out OUT_USB  &out OUT_BLE  &studio_unlock     &none  &none
+&bt BT_CLR      &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4                   &out OUT_TOG  &out OUT_USB  &out OUT_BLE  &studio_unlock     &ind_bat  &ind_con
 &bt BT_CLR_ALL  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &bt BT_DISC 3  &bt BT_DISC 4                  &to BASE      &none         &kp CAPSLOCK  &ext_power EP_TOG  &kp KP_NUMLOCK  &none
 &kp PAUSE_BREAK &kp SCROLLLOCK &kp K_APP       &sys_reset      &soft_off       &bootloader     &trans  &trans  &bootloader  &none          &none         &none              &none  &none
 &none           &none          &none          &trans         &trans         &trans                         &trans        &trans         &trans        &none              &none  &none

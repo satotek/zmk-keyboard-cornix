@@ -32,6 +32,14 @@
 3. 右 half と `cornix_ph_left` はペリフェラルなので Studio は不要
 4. Studio で加えた変更はキーボード側に保存される。新しい `.keymap` を反映するときは、書き込み後に Studio の **Restore Stock Settings** を実行する
 
+## RGB インジケータ（任意）
+
+`cornix_indicator` を有効にしたビルド（`cornix_left_indicator` / `cornix_right_indicator`）では、バッテリー残量と接続状態を RGB LED に表示する。通常のビルドには含まれない。
+
+- Adjust レイヤーの `BAT` / `CON` で、バッテリー・接続状態をオンデマンド表示
+- 表示は数秒で消灯し、アイドル 1 秒後に LED の電源レールが切れる
+- 明るさは `CONFIG_RGBLED_WIDGET_BRIGHTNESS=64`（シールド側で設定）
+
 ## ローカルビルド環境
 
 変更ファイル: `flake.nix`, `flake.lock` は上流のまま, `.envrc`, `.gitignore`, `Justfile`, `CMakeLists.txt`, `Kconfig`, `zephyr/module.yml`
