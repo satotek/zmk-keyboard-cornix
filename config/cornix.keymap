@@ -11,13 +11,16 @@
 #define LT_TAPPING_TERM 250
 
 #define HM_PRIOR_IDLE 125
-#define BASE 0
-#define LOWER 1
-#define RAISE 2
-#define ADJUST 3
-#define NAVI   4
-#define NUM    5
-#define WIN    6
+
+// A higher index wins. WIN only swaps the IME thumbs on Base, so it sits
+// right above Base; any higher and its &lt bindings cover the NumPad thumbs.
+#define BASE   0
+#define WIN    1
+#define LOWER  2
+#define RAISE  3
+#define ADJUST 4
+#define NAVI   5
+#define NUM    6
 
 // https://github.com/urob/zmk-config/tree/main#timeless-homerow-mods
 
@@ -119,6 +122,21 @@
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
 
+        Windows_layer {
+            display-name = "Windows";
+
+            // Toggled from Adjust. 英数 / かな taps become 無変換 / 変換.
+            // Holds still open Symbols / Function. Other keys fall through.
+
+            bindings = <
+&trans &trans &trans &trans &trans &trans                    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans                    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans      &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &lt LOWER INT_MUHENKAN &trans    &trans &lt RAISE INT_HENKAN &trans &trans &trans &trans
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+        };
+
         Symbol_layer {
             display-name = "Symbols";
 
@@ -197,21 +215,6 @@
 &trans &none  &none  &none  &none  &none  &trans  &trans  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_N3        &none         &none            &trans
 &trans &trans &trans &none  &none  &trans                 &kp KP_N0        &kp KP_DOT       &kp KP_ENTER     &trans        &trans           &trans
             >;
-        };
-
-        Windows_layer {
-            display-name = "Windows";
-
-            // Toggled from Adjust. 英数 / かな taps become 無変換 / 変換.
-            // Holds still open Symbols / Function. Other keys fall through.
-
-            bindings = <
-&trans &trans &trans &trans &trans &trans                    &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans                    &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans      &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &lt LOWER INT_MUHENKAN &trans    &trans &lt RAISE INT_HENKAN &trans &trans &trans &trans
-            >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
     };
 };
