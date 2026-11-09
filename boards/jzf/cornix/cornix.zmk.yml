@@ -6,6 +6,7 @@ url:
 features:
   - keys
   - encoder
+  - studio
   # - led
 siblings:
   - cornix_left
